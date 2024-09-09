@@ -1,7 +1,16 @@
 package com.mawaaw.ecommerce;
 
+import com.mawaaw.ecommerce.dao.CategoryRepository;
+import com.mawaaw.ecommerce.dao.ProductRepository;
+import com.mawaaw.ecommerce.entities.Category;
+import com.mawaaw.ecommerce.entities.Product;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import java.util.Random;
+import java.util.UUID;
 
 @SpringBootApplication
 public class EcommerceApplication {
@@ -10,4 +19,26 @@ public class EcommerceApplication {
 		SpringApplication.run(EcommerceApplication.class, args);
 	}
 
+	@Bean
+	CommandLineRunner commandLineRunner(ProductRepository productRepository, CategoryRepository categoryRepository) {
+		return args -> {
+			categoryRepository.save(new Category(1L,"Computers", null, null));
+			categoryRepository.save(new Category(null, "Printers", null, null));
+			categoryRepository.save(new Category(null, "Smartphones", null, null));
+
+			Random random=new Random();
+			categoryRepository.findAll().forEach(c->{
+				for(int i=0; i<10; i++) {
+					Product p = new Product();
+					p.setName(UUID.randomUUID().toString());
+					p.setCurrentPrice(100 + random.nextInt(10000));
+					p.setPromotion(random.nextBoolean());
+					p.setAvailable(random.nextBoolean());
+					p.setSelected(random.nextBoolean());
+					p.setCategory(c);
+					productRepository.save(p);
+				}
+			});
+		};
+	}
 }
