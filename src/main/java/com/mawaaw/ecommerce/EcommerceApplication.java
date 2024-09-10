@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
 import java.util.Random;
 import java.util.UUID;
@@ -20,11 +21,13 @@ public class EcommerceApplication {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(ProductRepository productRepository, CategoryRepository categoryRepository) {
+	CommandLineRunner commandLineRunner(ProductRepository productRepository, CategoryRepository categoryRepository, RepositoryRestConfiguration repositoryRestConfiguration) {
+
 		return args -> {
-			categoryRepository.save(new Category(1L,"Computers", null, null));
-			categoryRepository.save(new Category(null, "Printers", null, null));
-			categoryRepository.save(new Category(null, "Smartphones", null, null));
+			repositoryRestConfiguration.exposeIdsFor(Product.class,Category.class);
+			categoryRepository.save(new Category(null,"Computers", null, null,null));
+			categoryRepository.save(new Category(null, "Printers", null, null,null));
+			categoryRepository.save(new Category(null, "Smartphones",null, null, null));
 
 			Random random=new Random();
 			categoryRepository.findAll().forEach(c->{
