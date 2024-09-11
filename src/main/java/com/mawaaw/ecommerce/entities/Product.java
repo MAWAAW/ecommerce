@@ -19,7 +19,7 @@ public class Product implements Serializable {
     private boolean promotion;
     private boolean selected;
     private boolean available;
-    private String imageName;
+    private String photoName;
     @ManyToOne
     private Category category;
 }

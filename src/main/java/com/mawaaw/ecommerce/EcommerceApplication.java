@@ -17,6 +17,8 @@ import java.util.UUID;
 public class EcommerceApplication {
 
 	public static void main(String[] args) {
+
+		System.out.println("----------------------->" + System.getProperty("user.home")+"\\desktop\\ecom\\products\\");
 		SpringApplication.run(EcommerceApplication.class, args);
 	}
 
